@@ -51,6 +51,17 @@ Note that `INSTALL_DEVICE` in `build.sh` should be the same as `DEVICE` in `util
 ### Modules
 To trigger the hardware devices on the target machine, some necessary modules are needed when compiling the Linux kernel. Remember to update the `config/module_list` for the target machine. If one doesn't know which modules are needed, one can use `make allmodconfig` or `make allyesconfig` to enable almost all available modules but the Linux kernel will be very large and the build process will take a long time. Instead, one can use `make localmodconfig` or `make localyesconfig` to enable only the loaded modules(lsmod) on the host.
 
+### GRUB
+If someone connect the target machine via the terminal emulator(e.g. Minicom, Tera Term, or Putty), the output console should be specified with the corresponding serial port and the baud rate to display the messages correctly.  
+```
+menuentry "kylinux" --class os {
+    insmod gzio
+    insmod part_msdos
+    linux /boot/bzImage console=ttyS1,115200n8
+    initrd /boot/rootfs.cpio.gz
+}
+```
+
 ### Test
 The iso file is also created and tested with QEMU. The QEMU should be modified to 32-bit if 32-bit version is used.
 
